@@ -4,12 +4,13 @@
 import yfinance as yf
 
 rating_scores = {
-    "strong buy": 2,
-    "buy": 1,
-    "hold": 0,         #rating system 
-    "sell": -1,
-    "strong sell": -2
+    "strong buy": 50,
+    "buy": 38,
+    "hold": 20,
+    "sell": 8,
+    "strong sell": 0
 }
+
 
 def getYahoo_consensus(stock: str) -> tuple[str, int]:
     ticker = yf.Ticker(stock)        #takes the parameter stock, ex: "AAPL"
