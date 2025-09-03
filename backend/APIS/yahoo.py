@@ -1,29 +1,27 @@
+## Yahoo Finance API integration
+## Casen Ward
+
 import yfinance as yf
 
 rating_scores = {
     "strong buy": 2,
     "buy": 1,
-    "hold": 0,
+    "hold": 0,         #rating system 
     "sell": -1,
     "strong sell": -2
 }
 
 def getYahoo_consensus(stock: str) -> tuple[str, int]:
-    """
-    Fetch analyst recommendation for a stock symbol from Yahoo Finance.
-    Returns a tuple: (consensus as text, consensus as numeric score).
-    """
-    ticker = yf.Ticker(stock)
+    ticker = yf.Ticker(stock)        #takes the parameter stock, ex: "AAPL"
 
     try:
-        # Yahoo Finance provides a recommendations summary DataFrame
-        recs = ticker.recommendations_summary
+        recs = ticker.recommendations_summary        # Fetch recommendations summary
 
         if recs is None or recs.empty:
-            return ("no data", 0)
+            return ("no data", 0)     # No recommendations data available ()
 
-        latest = recs.iloc[-1]  # last row (most recent summary)
-        # Example keys: 'strongBuy', 'buy', 'hold', 'sell', 'strongSell'
+        latest = recs.iloc[-1]  # most recent update
+        # ex: 'strongBuy', 'buy', 'hold', 'sell', 'strongSell'
         counts = {
             "strong buy": latest.get("strongBuy", 0),
             "buy": latest.get("buy", 0),
