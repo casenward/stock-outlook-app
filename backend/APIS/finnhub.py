@@ -4,12 +4,15 @@
 import os
 import requests
 from dotenv import load_dotenv
+import datetime
+import time
 
 load_dotenv()
 
 FINNHUB_API_KEY = os.getenv("FINNHUB_API_KEY")
 URL = "https://finnhub.io/api/v1"
 
+# Get the stocks quote (current price and other data)
 def get_quote(symbol):
     url = f"{URL}/quote"
     params = {"symbol": symbol, "token": FINNHUB_API_KEY}
@@ -19,7 +22,6 @@ def get_quote(symbol):
 
 
 
-
-
 if __name__ == "__main__":
-    print(get_quote("TSLA"))
+    print(get_quote("AAPL"))
+

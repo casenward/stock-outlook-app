@@ -38,10 +38,17 @@ def getYahoo_consensus(stock: str) -> tuple[str, int]:
 
     except Exception as e:
         raise Exception(f"Yahoo Finance API error: {e}")
+    
+def get_candles(symbol, interval, start, end):
+    ticker = yf.Ticker(symbol)
+    hist = ticker.history(interval=interval, start=start, end=end)
+    return hist
 
 
 # test
 if __name__ == "__main__":
-    stock = "TSLA"
+    stock = "AMZN"
     text, score = getYahoo_consensus(stock)
     print(f"Yahoo consensus for {stock}: {text} (score: {score})")
+    hist = get_candles("AAPL", "1d", "2023-01-01", "2023-10-01")
+    print(hist)
