@@ -1,5 +1,127 @@
-/*@Author: Noah Sanchez
+<!--@Author: Noah Sanchez
 @Date: 9/16/2025
 @FileName: homepage.html
-@Brief: html script for app front end
-*/
+@Brief: html script for app front end-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Stock Consensus</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<main class="wrap">
+<header class="hero">
+<h1 class="title">Stock Consensus</h1>
+<p class="subtitle">Type a ticker (e.g., AAPL) and hit Enter</p>
+</header>
+
+
+<!-- Search bar -->
+<form id="search-form" class="search" action="#" method="get" autocomplete="off">
+<label for="q" class="visually-hidden">Search ticker</label>
+<input id="q" name="q" class="search__input" type="search"
+placeholder="Search by ticker…" list="tickers" required />
+<button class="btn" type="submit">Search</button> <!--Add api GET here-->
+
+
+<!-- Lightweight, no-JS suggestions using HTML datalist -->
+<datalist id="tickers">
+<!-- DJIA 30 (quick starter list) -->
+<option value="MMM">3M Company</option>
+<option value="AXP">American Express Company</option>
+<option value="AAPL">Apple Inc.</option>
+<option value="BA">Boeing Company</option>
+<option value="CAT">Caterpillar Inc.</option>
+<option value="CVX">Chevron Corporation</option>
+<option value="CSCO">Cisco Systems, Inc.</option>
+<option value="KO">The Coca-Cola Company</option>
+<option value="DOW">Dow Inc.</option>
+<option value="GS">Goldman Sachs Group, Inc.</option>
+<option value="HD">The Home Depot, Inc.</option>
+<option value="IBM">International Business Machines Corporation</option>
+<option value="INTC">Intel Corporation</option>
+<option value="JNJ">Johnson & Johnson</option>
+<option value="JPM">JPMorgan Chase & Co.</option>
+<option value="MCD">McDonald's Corporation</option>
+<option value="MRK">Merck & Co., Inc.</option>
+<option value="MSFT">Microsoft Corporation</option>
+<option value="NKE">Nike, Inc.</option>
+<option value="PG">Procter & Gamble Company</option>
+<option value="CRM">Salesforce, Inc.</option>
+<option value="TRV">The Travelers Companies, Inc.</option>
+<option value="UNH">UnitedHealth Group Incorporated</option>
+<option value="VZ">Verizon Communications Inc.</option>
+<option value="V">Visa Inc.</option>
+<option value="WBA">Walgreens Boots Alliance, Inc.</option>
+<option value="WMT">Walmart Inc.</option>
+<option value="DIS">The Walt Disney Company</option>
+<option value="AMGN">Amgen Inc.</option>
+<option value="HON">Honeywell International Inc.</option>
+</datalist>
+</form>
+
+
+<!-- Results panel (empty by default) -->
+<section id="results" class="panel" aria-live="polite">
+<div class="placeholder">
+<h2>Results</h2>
+<p>Search a ticker to see price, metrics, and a buy/sell consensus.</p>
+<ul>
+</section>
+
+<!--
+BACKEND HOOK (minimal notes):
+- Submit handler should call your API, e.g. GET /api/stock/{symbol}
+Then render JSON into #results.
+
+
+Suggested JS (add later in a separate script):
+
+
+<script>
+const form = document.getElementById('search-form');
+const input = document.getElementById('q');
+const results = document.getElementById('results');
+
+
+form.addEventListener('submit', async (e) => {
+e.preventDefault();
+const symbol = input.value.trim().toUpperCase();
+if (!symbol) return;
+results.innerHTML = '<div class="loading">Loading…</div>';
+
+
+try {
+const r = await fetch(`/api/stock/${symbol}`);
+if (!r.ok) throw new Error('Bad response');
+const data = await r.json();
+
+
+// TODO: adjust keys to match your backend stock shape
+results.innerHTML = `
+<article class="card">
+<header class="card__head">
+<h3>${data.symbol || symbol}</h3>
+<span class="price">$${(data.current_price ?? data.price ?? 0).toFixed?.(2) || data.current_price}</span>
+</header>
+<div class="card__body">
+<p><strong>Name:</strong> ${data.name || '—'}</p>
+<p><strong>Consensus:</strong> ${data.consensus?.text || '—'}</p>
+</div>
+</article>`;
+} catch (err) {
+results.innerHTML = '<div class="error">Could not load data. Check API.</div>';
+}
+});
+</script>
+-->
+
+
+<footer class="foot">
+<small>Demo UI — wire up to your API when ready.</small>
+</footer>
+</main>
+</body>
+</html>
