@@ -22,16 +22,21 @@ def calculate_consensus(stock) -> str:
 def get_momentum_score(stock) -> float:
     pass
     #TODO - implement momentum score calculation
+    return 50  # Placeholder value
     
 def get_pb_ratio_score(stock) -> float:
     pass
     #TODO - implement PB ratio score calculation
+    return 60  # Placeholder value
     
 def get_pe_ratio_score(stock) -> float:
     pass
     #TODO - implement PE ratio score calculation
+    return 70  # Placeholder value
     
 def get_dividend_yield_score(stock) -> float:
     pass
     #TODO - implement dividend yield score calculation
+    return 80  # Placeholder value
+
     
