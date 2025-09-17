@@ -2,6 +2,8 @@
 # Casen Ward
 
 import backend.apis.finnhub as finnhub
+import backend.services.consensus_calculator as consensus_calculator
+
 
 
 #DJIA 30 stocks for testing purposes
@@ -43,9 +45,7 @@ class Stock:
         self.symbol = symbol
         self.name = name
         self.current_price = None
-        self.metrics = {}
         self.consensus = None
-        self.candles = None
         
     def set_symbol(self):
         pass
@@ -57,12 +57,8 @@ class Stock:
     def set_currentPrice(self):
         self.current_price = finnhub.get_quote(self.symbol)["c"] # Current price is in the "c" field of the quote response
     
-    def set_metrics(self):
-        self.metrics = finnhub.get_metrics(self.symbol)["metric"] # Metrics are in the "metric" field of the metrics response
-        
     def set_consensus(self):
-        pass
-        #TODO - Need to write the consensus calculator file and import it here
+        self.consensus = consensus_calculator.calculate_consensus(self.symbol)
 
-    def set_candles(self):
-        self.candles = finnhub.get_candles(self.symbol)
+        
+    
