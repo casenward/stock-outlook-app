@@ -39,4 +39,9 @@ def get_dividend_yield_score(stock) -> float:
     #TODO - implement dividend yield score calculation
     return 80  # Placeholder value
 
+if __name__ == "__main__":
+    test_stock = "AAPL"
+    consensus = calculate_consensus(test_stock)
+    print(f"Consensus for {test_stock}: {consensus}")
+
     
