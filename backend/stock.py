@@ -2,9 +2,20 @@
 # Casen Ward
 
 import backend.apis.finnhub as finnhub
-import backend.services.consensus_calculator as consensus_calculator
+import backend.services.score_calculator as score_calculator
 
 
+def final_rating(score: float) -> str:
+    if score >= 90:
+        return "Strong Buy"
+    elif score >= 75:
+        return "Buy"
+    elif score >= 50:
+        return "Hold"
+    elif score >= 30:
+        return "Sell"
+    else:
+        return "Strong Sell"
 
 #DJIA 30 stocks for testing purposes
 DJIA_30 = {
@@ -45,7 +56,7 @@ class Stock:
         self.symbol = symbol
         self.name = name
         self.current_price = None
-        self.consensus = None
+        self.score = None
         
     def set_symbol(self):
         pass
@@ -57,8 +68,11 @@ class Stock:
     def set_currentPrice(self):
         self.current_price = finnhub.get_quote(self.symbol)["c"] # Current price is in the "c" field of the quote response
     
+    def set_score(self):
+        self.score = score_calculator.calculate_score(self)
+        
     def set_consensus(self):
-        self.consensus = consensus_calculator.calculate_consensus(self)
+        self.consensus = final_rating(self.score)
 
         
     
