@@ -5,10 +5,7 @@ if TYPE_CHECKING:
     from backend.stock import Stock
 
 import time
-
-one_year_ago = int(time.time()) - 365 * 24 * 60 * 60
-today = int(time.time())
-
+import pandas as pd
 
 
 
@@ -26,36 +23,41 @@ def final_rating(score: float) -> str:
 
 
 def calculate_consensus(stock_obj) -> str:
-    yahoo_score = yahoo.getYahoo_consensus(stock_obj.symbol)[1] * 0.6
-    momentum_score = get_momentum_score(stock_obj) * 0.1
-    pb_score = get_pb_ratio_score(stock_obj) * 0.1
-    pe_score = get_pe_ratio_score(stock_obj) * 0.1
-    dividend_score = get_dividend_yield_score(stock_obj) * 0.1
-    total_score = yahoo_score + momentum_score + pb_score + pe_score + dividend_score
-    return final_rating(total_score)
-
-
+    yahoo_score = yahoo.getYahoo_consensus(stock_obj.symbol)[1] * 0.6    #60% weight   
+    momentum_score = get_momentum_score(stock_obj) * 0.1   #10% weight
+    pb_score = get_pb_ratio_score(stock_obj) * 0.1      #10% weight
+    pe_score = get_pe_ratio_score(stock_obj) * 0.1      #10% weight
+    dividend_score = get_dividend_yield_score(stock_obj) * 0.1          #10% weight
+    total_score = yahoo_score + momentum_score + pb_score + pe_score + dividend_score   # Sum weighted scores
+    return final_rating(total_score)                                        
+  
 import time
 
 def get_momentum_score(stock_obj: "Stock") -> float:
-    if stock_obj.current_price is None:
-        stock_obj.set_currentPrice()
-    current_price = stock_obj.current_price
-    one_year_ago = int(time.time()) - 365 * 24 * 60 * 60
-    today = int(time.time())
-    candles = finnhub.get_candles(stock_obj.symbol, "D", one_year_ago, today)
-    if not candles or "c" not in candles or not candles["c"]:
+
+    current_price = stock_obj.current_price         # Ensure current price is set
+    if current_price is None:   
+        stock_obj.set_currentPrice()              
+        current_price = stock_obj.current_price             
+    one_year_ago = int(time.time()) - 365 * 24 * 60 * 60      # Timestamp for one year ago
+    today = int(time.time())                        # Current timestamp
+
+    candles = yahoo.get_candles(stock_obj.symbol, "1d", one_year_ago, today)
+    if candles is None or candles.empty:             # No data available
         return 50
-    one_year_ago_price = candles["c"][0]
-    if one_year_ago_price == 0:
-        return 50
-    momentum = ((current_price - one_year_ago_price) / one_year_ago_price) * 100
+
+    one_year_ago_price = candles["Close"].iloc[0]      # Closing price one year ago
+    if one_year_ago_price == 0 or pd.isna(one_year_ago_price):
+        return 50    # Avoid division by zero or NaN
+
+    momentum = ((current_price - one_year_ago_price) / one_year_ago_price) * 100         # Percentage change over the year
+
     if momentum >= 20:
         return 100
     elif momentum >= 10:
         return 80
     elif momentum >= 0:
-        return 60
+        return 60          # Scoring can be adjusted based on testing and analysis
     elif momentum >= -10:
         return 40
     elif momentum >= -20:
@@ -66,7 +68,7 @@ def get_momentum_score(stock_obj: "Stock") -> float:
 
 
 def get_pb_ratio_score(stock_obj) -> float:
-    return 60
+    return 80
 
 
 def get_pe_ratio_score(stock_obj) -> float:
