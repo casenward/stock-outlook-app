@@ -58,7 +58,7 @@ class Stock:
         self.current_price = finnhub.get_quote(self.symbol)["c"] # Current price is in the "c" field of the quote response
     
     def set_consensus(self):
-        self.consensus = consensus_calculator.calculate_consensus(self.symbol)
+        self.consensus = consensus_calculator.calculate_consensus(self)
 
         
     
