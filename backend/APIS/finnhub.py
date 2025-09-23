@@ -16,7 +16,7 @@ URL = "https://finnhub.io/api/v1"        # Finnhub base URL
 def get_quote(symbol):
     url = f"{URL}/quote"    #sets url as the constant URL + endpoint
     params = {"symbol": symbol, "token": FINNHUB_API_KEY}    #symbol = stock tucker ex: "AAPL", token = api key
-    r = requests.get(url, params=params)    #makes a get request to the url with the parameters
+    r = requests.get(url, params=params, timeout=5)   #makes a get request to the url with the parameters
     r.raise_for_status()       # Raise an error for bad responses
     return r.json()         #returns the response as a json object
 

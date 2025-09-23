@@ -1,10 +1,6 @@
 from numpy import double
 import backend.apis.finnhub as finnhub
 import backend.apis.yahoo as yahoo
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from backend.stock import Stock
-
 import time
 import pandas as pd
 
@@ -118,7 +114,7 @@ def get_dividend_yield_score(stock_obj) -> float:
 
 if __name__ == "__main__":
     from backend.stock import Stock
-    test_stock = Stock("AAPL", "Apple Inc.")
+    test_stock = Stock("AMZN")
     test_stock.set_currentPrice()
     test_stock.set_score()
     print(f"Stock: {test_stock.symbol}, Current Price: {test_stock.current_price}, Score: {test_stock.score}")
