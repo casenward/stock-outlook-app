@@ -18,6 +18,28 @@
   <!-- NOTE: this now points to homepage.css to match your file name -->
   <link rel="stylesheet" href="homepage.css" />
 </head>
+<script>
+document.getElementById("search-form").addEventListener("submit", async function(e) {
+  e.preventDefault(); // stop page reload
+  const ticker = document.getElementById("q").value.trim().toUpperCase();
+
+  if (!ticker) return;
+
+  try {
+    // Send ticker to backend endpoint
+    const response = await fetch(`/api/stock/${ticker}`);
+    const data = await response.json();
+
+    // For now, just log to console
+    console.log("Stock data:", data);
+
+    // TODO: update results panel with data.name, data.current_price, data.consensus, etc.
+  } catch (err) {
+    console.error("Error fetching stock:", err);
+  }
+});
+</script>
+
 <body>
   <main class="wrap">
     <header class="hero">
@@ -80,6 +102,32 @@
       <small>Demo UI — wire up to your API when ready.</small>
     </footer>
   </main>
+  <script>
+document.getElementById("search-form").addEventListener("submit", async function(e) {
+  e.preventDefault();
+  const ticker = document.getElementById("q").value.trim().toUpperCase();
+
+  if (!ticker) return;
+
+  try {
+    const response = await fetch(`http://127.0.0.1:8000/api/stock/${ticker}`);
+    const data = await response.json();
+
+    // Build HTML for results panel
+    const resultsDiv = document.getElementById("results");
+    resultsDiv.innerHTML = `
+      <div class="panel">
+        <h2>${data.name} (${data.symbol})</h2>
+        <p><strong>Current Price:</strong> $${data.current_price}</p>
+        <p><strong>Score:</strong> ${data.score}</p>
+        <p><strong>Consensus:</strong> ${data.consensus}</p>
+      </div>
+    `;
+  } catch (err) {
+    console.error("Error fetching stock:", err);
+  }
+});
+</script>
 
   <!-- No JS/functionality changes included here. Keep your current script as-is when you add it. -->
 </body>

@@ -53,12 +53,15 @@ DJIA_30 = {
 
 class Stock:
     def __init__(self, symbol):
-        self.symbol = symbol
+        self.symbol = None
         self.name = None
         self.current_price = None
         self.score = None
         self.consensus = None
-        
+
+    def set_symbol(self, symbol):
+        self.symbol = symbol.upper() 
+
     def set_name(self):
         self.name = DJIA_30.get(self.symbol, "Unknown Company")  # Default to "Unknown Company" if symbol not found
     

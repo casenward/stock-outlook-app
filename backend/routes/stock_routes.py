@@ -1,17 +1,19 @@
 from fastapi import APIRouter
-from stock import Stock
-from apis.finnhub import get_quote
+from backend.stock import Stock
 
 router = APIRouter()
 
 @router.get("/stock/{symbol}")
 def get_stock(symbol: str):
-    # Create stock object
-    stock = Stock(symbol, "Placeholder Name")  # name could come from API later
-
-    # Fetch price from API
-    quote = get_quote(symbol)
-    stock.set_price(quote["c"])
-
-    # Return as JSON
-    return stock.to_dict()
+    stock = Stock(symbol)
+    stock.set_symbol(symbol)
+    stock.set_name()
+    stock.set_currentPrice()
+    stock.set_consensus()
+    return {
+        "symbol": stock.symbol,
+        "name": stock.name,
+        "current_price": stock.current_price,
+        "score": stock.score,
+        "consensus": stock.consensus,
+    }
