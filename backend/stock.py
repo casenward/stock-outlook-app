@@ -59,10 +59,6 @@ class Stock:
         self.score = None
         self.consensus = None
         
-    def set_symbol(self):
-        pass
-        #TODO - Need to retrieve from frontend
-        
     def set_name(self):
         self.name = DJIA_30.get(self.symbol, "Unknown Company")  # Default to "Unknown Company" if symbol not found
     
@@ -73,6 +69,7 @@ class Stock:
         self.score = score_calculator.calculate_score(self)
         
     def set_consensus(self):
+        self.set_score()
         self.consensus = final_rating(self.score)
 
         
