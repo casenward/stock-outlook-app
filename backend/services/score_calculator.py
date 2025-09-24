@@ -6,10 +6,10 @@ import pandas as pd
 
 
 def calculate_score(stock_obj) -> float:
-    yahoo_score = yahoo.getYahoo_consensus(stock_obj.symbol)[1] * 0.6    #60% weight   
-    momentum_score = get_momentum_score(stock_obj) * 0.1   #10% weight
+    yahoo_score = yahoo.getYahoo_consensus(stock_obj.symbol)[1] * 0.4    #40% weight
+    momentum_score = get_momentum_score(stock_obj) * 0.25   #25% weight
     pb_score = get_pb_ratio_score(stock_obj) * 0.1      #10% weight
-    pe_score = get_pe_ratio_score(stock_obj) * 0.1      #10% weight
+    pe_score = get_pe_ratio_score(stock_obj) * 0.15      #15% weight
     dividend_score = get_dividend_yield_score(stock_obj) * 0.1          #10% weight
     total_score = yahoo_score + momentum_score + pb_score + pe_score + dividend_score   # Sum weighted scores
     return total_score                                       
