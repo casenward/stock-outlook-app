@@ -467,4 +467,4 @@ def analysis(strategy_name):
         
     
 if __name__ == "__main__":
-    analysis("mean_reversion")
+    analysis("mock")
